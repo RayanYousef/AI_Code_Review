@@ -27,7 +27,6 @@ public class HealthSystem : MonoBehaviour
     public float attackDamage = 10f;
     public float attackCooldown = 2f;
     private float lastAttackTime;
-    private Transform playerTransform;
 
     public bool isPlayer = false;
     public KeyCode healKey = KeyCode.H;
@@ -54,26 +53,18 @@ public class HealthSystem : MonoBehaviour
 
         if (isEnemy)
         {
-            GameObject player = GameObject.FindGameObjectWithTag("Player");
-            playerTransform = player != null ? player.transform : null;
             StartCoroutine(EnemyAILoop());
         }
     }
 
     void Update()
     {
-        if (!isAlive)
-        {
-            // keep UI synced even when dead
-            UpdateUI();
-            return;
-        }
         if (isPlayer)
         {
             HandlePlayerInput();
         }
 
-        if (autoRegen && isAlive && currentHealth < maxHealth)
+        if (autoRegen && currentHealth < maxHealth)
         {
             RegenerateHealth();
         }
@@ -90,11 +81,9 @@ public class HealthSystem : MonoBehaviour
     {
         if (isInvulnerable || !isAlive) return;
 
-        float actualDamage = Mathf.Max(0f, damage - defense) * damageMultiplier;
-        if (actualDamage <= 0f) return;
+        float actualDamage = Mathf.Max(0, damage - defense) * damageMultiplier;
 
         currentHealth -= actualDamage;
-        currentHealth = Mathf.Max(0f, currentHealth);
 
         if (bloodEffect != null)
         {
@@ -121,21 +110,16 @@ public class HealthSystem : MonoBehaviour
             StartCoroutine(DamageFlash());
         }
 
-        if (currentHealth <= 0f)
+        if (currentHealth <= 0)
         {
             Die();
         }
 
-        if (isAlive)
-        {
-            StartCoroutine(InvulnerabilityCoroutine());
-        }
+        StartCoroutine(InvulnerabilityCoroutine());
     }
 
     public void Heal(float amount)
     {
-        if (!isAlive || amount <= 0f) return;
-
         currentHealth = Mathf.Min(maxHealth, currentHealth + amount);
 
         if (audioSource != null && healSound != null)
@@ -190,17 +174,15 @@ public class HealthSystem : MonoBehaviour
 
     private void UpdateEnemyAI()
     {
-        if (!isAlive) return;
+        GameObject player = GameObject.FindGameObjectWithTag("Player");
 
-        if (playerTransform != null)
+        if (player != null)
         {
-            Vector3 delta = transform.position - playerTransform.position;
-            float sqrDistance = delta.sqrMagnitude;
-            float sqrRange = attackRange * attackRange;
+            float distance = Vector3.Distance(transform.position, player.transform.position);
 
-            if (sqrDistance <= sqrRange && Time.time - lastAttackTime >= attackCooldown)
+            if (distance <= attackRange && Time.time - lastAttackTime >= attackCooldown)
             {
-                Attack(playerTransform.gameObject);
+                Attack(player);
             }
         }
     }
@@ -260,7 +242,7 @@ public class HealthSystem : MonoBehaviour
     {
         if (healthBar != null)
         {
-            healthBar.value = maxHealth > 0f ? currentHealth / maxHealth : 0f;
+            healthBar.value = currentHealth / maxHealth;
         }
 
         if (healthText != null)
@@ -305,17 +287,16 @@ public class AdvancedHealthSystem : HealthSystem
 
     public override void TakeDamage(float damage)
     {
-        if (isInvulnerable || !isAlive) return;
-
-        if (shield > 0f && damage > 0f)
+        if (shield > 0)
         {
-            float absorbed = Mathf.Min(shield, damage);
-            shield -= absorbed;
-            damage -= absorbed;
+            float shieldDamage = Mathf.Min(shield, damage);
+            shield -= shieldDamage;
+            damage -= shieldDamage;
         }
 
-        if (damage <= 0f) return;
-
-        base.TakeDamage(damage);
+        if (damage > 0)
+        {
+            currentHealth -= damage;
+        }
     }
 }
