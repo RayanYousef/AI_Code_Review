@@ -1,10 +1,6 @@
 language: en-US
 
-tone_instructions: |
-  Enforce ALL rules from CodingGuidelines.md strictly and comprehensively.
-  For EVERY violation found, cite exact line numbers, explain the issue and impact, and provide corrected code examples.
-  Reference the specific guideline section from CodingGuidelines.md.
-  Do not skip or overlook any violations.
+tone_instructions: Enforce all rules from CodingGuidelines.md strictly. For every violation, cite line numbers, explain the issue, provide corrected code, and reference the guideline section.
 
 knowledge_base:
   opt_out: false
