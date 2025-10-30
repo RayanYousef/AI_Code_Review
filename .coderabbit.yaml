@@ -1,14 +1,8 @@
-# Global Settings
 language: en-US
 
 tone_instructions: |
-  Be extremely strict and uncompromising in enforcing CodingGuidelines.md.
-  Treat every violation as a critical issue that must be fixed.
-  Use formal, professional language when pointing out violations.
-  Always reference the specific section of CodingGuidelines.md.
-  Never accept or suggest workarounds for violations - demand strict compliance.
+  Enforce all rules from CodingGuidelines.md strictly. For every violation, cite exact line numbers, explain the issue and impact, provide corrected code examples, and reference the specific guideline section. Focus on SOLID principles, KISS, DRY, CQS, single responsibility functions, explicit types (no 'var'), Unity-specific patterns, and proper naming conventions.
 
-# Knowledge Base Configuration
 knowledge_base:
   opt_out: false
   learnings:
@@ -16,166 +10,88 @@ knowledge_base:
   code_guidelines:
     enabled: true
     filePatterns:
-      - "**/CodingGuidelines.md"
       - "**/.rules/CodingGuidelines.md"
+      - "**/CodingGuidelines.md"
 
-review_instructions: |
-  PRIMARY STANDARD: Enforce ALL rules from CodingGuidelines.md with ZERO TOLERANCE.
-
-  CRITICAL ENFORCEMENT AREAS:
-
-  1. **SOLID PRINCIPLES** (Section 14-19):
-     - Single Responsibility: Flag any class/method doing multiple things
-     - Open/Closed: Check for hard-coded modifications instead of extensions
-     - Liskov Substitution: Verify subtype compatibility
-     - Interface Segregation: Detect fat interfaces
-     - Dependency Inversion: Flag concrete dependencies
-
-  2. **KISS PRINCIPLE** (Section 21-24):
-     - Reject complex solutions when simple ones exist
-     - Flag unnecessary abstractions or patterns
-
-  3. **COMMAND & QUERY SEPARATION** (Section 26-29):
-     - Commands: Change state, return void
-     - Queries: Return data, no state changes
-     - Flag methods doing both
-
-  4. **DRY PRINCIPLE** (Section 31-34):
-     - Identify ALL code duplication (3+ lines)
-     - Require extraction to reusable methods/classes
-
-  5. **FUNCTION DESIGN** (Section 36-39):
-     - ONE responsibility per function
-     - Split multi-purpose functions immediately
-
-  6. **C# CODING STYLE** (Section 42+):
-     - NO 'var' usage - EVER (Section 66)
-     - PascalCase: Classes, Methods, Public fields/properties
-     - camelCase: Local variables, parameters
-     - _camelCase: Private/protected fields
-     - Explicit visibility modifiers always (Section 63)
-     - Null conditional for delegates/events (Section 67)
-
-  7. **UNITY-SPECIFIC** (Section 73+):
-     - [SerializeField] private fields only (Section 82-83)
-     - Cache components in Awake/Start (Section 76-78)
-     - NO LINQ in hot paths (Section 93)
-     - Use NonAlloc methods (Section 94)
-     - NO public Unity lifecycle methods (Section 99-100)
-     - Button methods: OnButtonClick_ prefix (Section 87)
-     - Naming: _levelManager, transformRef, rigidbodyComponent (Section 79)
-
-  VIOLATION REPORTING FORMAT:
-  ═══════════════════════════════════════
-  VIOLATION: [PRINCIPLE/CATEGORY]
-  LINE(S): [EXACT LINE NUMBERS]
-  ISSUE: [DETAILED EXPLANATION + IMPACT]
-  SOLUTION:
-  ```csharp
-  [CORRECTED CODE WITH FIX]
-  ```
-  GUIDELINE REFERENCE: [CodingGuidelines.md Section X]
-  ═══════════════════════════════════════
-
-  ACCEPT NO COMPROMISES. EVERY VIOLATION IS A BLOCKING ISSUE.
-
-# Reviews Configuration
 reviews:
-  profile: assertive  # More feedback for strict guideline enforcement
-
-  # Core review settings
+  profile: assertive
   high_level_summary: true
-  review_status: true
-  commit_status: true
-  fail_commit_status: true
-
-  # Walkthrough settings
-  collapse_walkthrough: false  # Keep violations visible
-  changed_files_summary: true
-  sequence_diagrams: false  # Focus on code quality, not diagrams
-  estimate_code_review_effort: true
-  poem: false  # No poems - focus on violations
-
-  # Path filtering
+  auto_review:
+    enabled: true
+    drafts: false
+  
   path_filters:
     - "!**/settings.json"
     - "!**/*.meta"
-    - "!**/Packages/**"  # Unity packages
-    - "!**/Library/**"   # Unity Library
-    - "!**/Temp/**"      # Unity temp files
-
+    - "!**/Library/**"
+    - "!**/Temp/**"
+    - "!**/Logs/**"
+  
   path_instructions:
     - path: "**/*.cs"
       instructions: |
-        ZERO-TOLERANCE CODE REVIEW FOR C# FILES:
-
-        AUTOMATED VIOLATION SCANNING:
-
-        **IMMEDIATE REJECTION CRITERIA:**
-        - Any 'var' keyword usage (MANDATORY explicit types)
-        - Public Unity lifecycle methods (Awake, Start, Update, etc.)
-        - LINQ usage in Update/FixedUpdate/LateUpdate
-        - GetComponent() calls outside Awake/Start
-        - Missing [SerializeField] on private serialized fields
-        - Non-PascalCase class/method names
-        - Non-camelCase local variables
-        - Non-_camelCase private fields
-
-        **FUNCTION ANALYSIS:**
-        - Count responsibilities per function (reject if >1)
-        - Check for state mutation + return values (CQS violation)
-        - Identify code duplication (3+ lines)
-
-        **UNITY PERFORMANCE CHECKS:**
-        - Component references cached?
-        - NonAlloc physics methods used?
-        - String operations in hot paths?
-        - Event delegates use null conditional?
-
-        **SOLID COMPLIANCE:**
-        - Class has single responsibility?
-        - Dependencies injected (not hardcoded)?
-        - Interfaces properly segregated?
-
-        FOR EACH VIOLATION FOUND:
+        MANDATORY REVIEW CHECKLIST FOR C# FILES (per CodingGuidelines.md):
+        
+        1. **TYPE DECLARATION ANALYSIS:**
+           - Search for all 'var' declarations - these are FORBIDDEN
+           - For each 'var' found: cite line number, specify required explicit type, provide corrected line
+        
+        2. **SINGLE RESPONSIBILITY CHECK:**
+           - Review each function/method body
+           - If function has 2+ distinct responsibilities, list each responsibility with line ranges
+           - Suggest function split with example implementation
+           - Each function must have only one responsibility
+        
+        3. **UNITY-SPECIFIC VIOLATIONS:**
+           - [SerializeField] on private editor fields: check line-by-line, must be written as '[SerializeField] private'
+           - Component caching: verify components are cached in Awake/Start (cite missing lines)
+           - LINQ in Update/LateUpdate/FixedUpdate: flag usage and provide NonAlloc alternative or for-loop
+           - GetComponent in Update loops: cite line, explain performance impact, suggest caching
+           - Lifecycle method modifiers: flag any 'public' on Awake/Start/Update/OnEnable/OnDisable/OnDestroy (should be private or no modifier)
+           - Naming conventions: check PascalCase for classes/methods/public/private fields, camelCase for local vars, _camelCase for private fields
+           - Button methods: must start with "OnButtonClick_" and call separate logic methods
+           - Event listeners: must end with "Callback"
+           - Boolean properties: must start with Is/Has/Did
+        
+        4. **SOLID PRINCIPLES:**
+           - Single Responsibility: one reason to change per class
+           - Open/Closed: check for hard-coded values that should be parameters
+           - Liskov Substitution: verify override implementations maintain base contract
+           - Interface Segregation: look for fat interfaces that should be split
+           - Dependency Inversion: check for hard dependencies instead of abstractions
+        
+        5. **DRY VIOLATIONS:**
+           - Identify duplicated code blocks (3+ similar lines)
+           - Cite all occurrences with line numbers
+           - Provide refactored solution using helper method or abstraction
+        
+        6. **CQS VIOLATIONS:**
+           - Flag methods that both query state AND modify state
+           - Cite line numbers where both occur
+           - Suggest separation into separate methods (Command vs Query)
+        
+        7. **NAMING AND STRUCTURE:**
+           - Classes/Methods/Public/Private fields: PascalCase
+           - Local variables/Parameters: camelCase
+           - Private/Protected fields: _camelCase (underscore prefix)
+           - Interfaces: must start with 'I'
+           - Always specify visibility modifiers (private, public, etc.)
+           - Visibility modifier order: 'public static' not 'static public'
+        
+        8. **FILE ORGANIZATION:**
+           - Using statements at top, before namespace
+           - System imports first, then alphabetical
+           - Class member order: nested types, static/const/readonly fields, fields/properties, constructors, methods
+           - Access modifier order within groups: public, internal, protected internal, protected, private
+        
+        OUTPUT FORMAT FOR EACH VIOLATION:
         ═══════════════════════════════════════
-        BLOCKING VIOLATION DETECTED
-        LINE(S): [EXACT NUMBERS]
-        CRITICAL ISSUE: [IMPACT DESCRIPTION]
-        REQUIRED FIX:
+        VIOLATION: [Category Name]
+        LINE(S): [Specific line numbers]
+        ISSUE: [Detailed explanation and impact]
+        SOLUTION:
         ```csharp
-        [EXACT CORRECTED CODE]
+        [Corrected code example]
         ```
-        VIOLATION TYPE: [SOLID/KISS/DRY/etc.]
-        GUIDELINE: CodingGuidelines.md Section [X]
+        GUIDELINE REFERENCE: [CodingGuidelines.md section]
         ═══════════════════════════════════════
-
-    - path: "**/*.md"
-      instructions: |
-        Documentation files should follow project standards.
-        Check for consistency with CodingGuidelines.md references.
-
-# Chat Configuration
-chat:
-  auto_reply: true
-  art: false  # Focus on technical discussions, not art
-
-# Code Generation Configuration
-code_generation:
-  docstrings:
-    language: en-US
-    path_instructions:
-      - path: "**/*.cs"
-        instructions: |
-          Generate docstrings that reference CodingGuidelines.md compliance.
-          Include XML documentation tags for all public members.
-          Follow Microsoft's documentation standards.
-
-  unit_tests:
-    path_instructions:
-      - path: "**/*.cs"
-        instructions: |
-          Generate unit tests following SOLID principles.
-          Use explicit types (no var).
-          Follow naming conventions from CodingGuidelines.md.
-          Test single responsibilities, not multiple concerns.
