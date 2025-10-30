@@ -11,12 +11,13 @@ review_instructions: |
   - Unity-specific rules (serialization with [SerializeField], cache components in Awake/Start, avoid LINQ in perf paths, use NonAlloc APIs, avoid GetComponent in Update, no public modifiers on Unity lifecycle methods, naming conventions)
   If a change violates these, cite the relevant section from CodingGuidelines.md and suggest a compliant alternative.
 
-path_instructions:
-  - path: "**/*.cs"
-    instructions: |
-      Apply all C# and Unity rules from CodingGuidelines.md.
-      Flag usage of 'var', multi-responsibility methods, and Unity anti-patterns (LINQ in hot paths, GetComponent in Update, uncached components, missing [SerializeField] for private editor fields, public Unity lifecycle methods).
-
-path_filters:
-  - "!settings.json"
-  - "!**/*.meta"
+reviews:
+  path_filters:
+    - "!settings.json"
+    - "!**/*.meta"
+  
+  path_instructions:
+    - path: "**/*.cs"
+      instructions: |
+        Apply all C# and Unity rules from CodingGuidelines.md.
+        Flag usage of 'var', multi-responsibility methods, and Unity anti-patterns (LINQ in hot paths, GetComponent in Update, uncached components, missing [SerializeField] for private editor fields, public Unity lifecycle methods).
