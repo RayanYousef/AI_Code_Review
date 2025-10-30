@@ -56,5 +56,7 @@
         "temp/": true,
         "Temp/": true
     },
-    "dotnet.defaultSolution": "AI_Code_Review.sln"
+    "dotnet.defaultSolution": "AI_Code_Review.sln",
+    "coderabbit.agentType": "Claude Code",
+    "coderabbit.autoReviewMode": "disabled"
 }
