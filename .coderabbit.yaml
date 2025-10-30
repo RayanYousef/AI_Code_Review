@@ -13,7 +13,7 @@ review_instructions: |
 
 reviews:
   path_filters:
-    - "!settings.json"
+    - "!**/settings.json"
     - "!**/*.meta"
   
   path_instructions:
