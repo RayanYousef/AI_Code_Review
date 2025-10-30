@@ -1,7 +1,10 @@
 language: en-US
 
 tone_instructions: |
-  Enforce all rules from CodingGuidelines.md strictly. For every violation, cite exact line numbers, explain the issue and impact, provide corrected code examples, and reference the specific guideline section. Focus on SOLID principles, KISS, DRY, CQS, single responsibility functions, explicit types (no 'var'), Unity-specific patterns, and proper naming conventions.
+  Enforce ALL rules from CodingGuidelines.md strictly and comprehensively.
+  For EVERY violation found, cite exact line numbers, explain the issue and impact, and provide corrected code examples.
+  Reference the specific guideline section from CodingGuidelines.md.
+  Do not skip or overlook any violations.
 
 knowledge_base:
   opt_out: false
@@ -30,68 +33,26 @@ reviews:
   path_instructions:
     - path: "**/*.cs"
       instructions: |
-        MANDATORY REVIEW CHECKLIST FOR C# FILES (per CodingGuidelines.md):
+        Review this C# file STRICTLY against CodingGuidelines.md.
         
-        1. **TYPE DECLARATION ANALYSIS:**
-           - Search for all 'var' declarations - these are FORBIDDEN
-           - For each 'var' found: cite line number, specify required explicit type, provide corrected line
+        Check EVERY violation:
+        1. Type declarations: All 'var' must be replaced with explicit types
+        2. Naming conventions: PascalCase for classes/methods/public fields, _camelCase for private fields, camelCase for locals
+        3. Single responsibility: Each function must have only ONE responsibility
+        4. DRY principle: No code duplication
+        5. CQS: Methods must either command (modify state) OR query (return data), not both
+        6. Explicit visibility modifiers: Always specify private/public
+        7. Boolean naming: Start with Is/Has/Did
+        8. Event naming: End with "Callback"
+        9. Button methods: Start with "OnButtonClick_"
+        10. Unity methods: Awake/Start/Update must NOT be public
+        11. LINQ in Update loops: Flag and suggest NonAlloc or for-loops
+        12. GetComponent caching: Must cache in Awake/Start, not in Update
+        13. Serialization: Use '[SerializeField] private' format
         
-        2. **SINGLE RESPONSIBILITY CHECK:**
-           - Review each function/method body
-           - If function has 2+ distinct responsibilities, list each responsibility with line ranges
-           - Suggest function split with example implementation
-           - Each function must have only one responsibility
-        
-        3. **UNITY-SPECIFIC VIOLATIONS:**
-           - [SerializeField] on private editor fields: check line-by-line, must be written as '[SerializeField] private'
-           - Component caching: verify components are cached in Awake/Start (cite missing lines)
-           - LINQ in Update/LateUpdate/FixedUpdate: flag usage and provide NonAlloc alternative or for-loop
-           - GetComponent in Update loops: cite line, explain performance impact, suggest caching
-           - Lifecycle method modifiers: flag any 'public' on Awake/Start/Update/OnEnable/OnDisable/OnDestroy (should be private or no modifier)
-           - Naming conventions: check PascalCase for classes/methods/public/private fields, camelCase for local vars, _camelCase for private fields
-           - Button methods: must start with "OnButtonClick_" and call separate logic methods
-           - Event listeners: must end with "Callback"
-           - Boolean properties: must start with Is/Has/Did
-        
-        4. **SOLID PRINCIPLES:**
-           - Single Responsibility: one reason to change per class
-           - Open/Closed: check for hard-coded values that should be parameters
-           - Liskov Substitution: verify override implementations maintain base contract
-           - Interface Segregation: look for fat interfaces that should be split
-           - Dependency Inversion: check for hard dependencies instead of abstractions
-        
-        5. **DRY VIOLATIONS:**
-           - Identify duplicated code blocks (3+ similar lines)
-           - Cite all occurrences with line numbers
-           - Provide refactored solution using helper method or abstraction
-        
-        6. **CQS VIOLATIONS:**
-           - Flag methods that both query state AND modify state
-           - Cite line numbers where both occur
-           - Suggest separation into separate methods (Command vs Query)
-        
-        7. **NAMING AND STRUCTURE:**
-           - Classes/Methods/Public/Private fields: PascalCase
-           - Local variables/Parameters: camelCase
-           - Private/Protected fields: _camelCase (underscore prefix)
-           - Interfaces: must start with 'I'
-           - Always specify visibility modifiers (private, public, etc.)
-           - Visibility modifier order: 'public static' not 'static public'
-        
-        8. **FILE ORGANIZATION:**
-           - Using statements at top, before namespace
-           - System imports first, then alphabetical
-           - Class member order: nested types, static/const/readonly fields, fields/properties, constructors, methods
-           - Access modifier order within groups: public, internal, protected internal, protected, private
-        
-        OUTPUT FORMAT FOR EACH VIOLATION:
-        ═══════════════════════════════════════
-        VIOLATION: [Category Name]
-        LINE(S): [Specific line numbers]
-        ISSUE: [Detailed explanation and impact]
-        SOLUTION:
-        ```csharp
-        [Corrected code example]
-        ```
-        GUIDELINE REFERENCE: [CodingGuidelines.md section]
-        ═══════════════════════════════════════
+        For each violation found, output:
+        VIOLATION: [Category]
+        LINE(S): [line numbers]
+        ISSUE: [explanation]
+        SOLUTION: [corrected code]
+        GUIDELINE: [CodingGuidelines.md section reference]
