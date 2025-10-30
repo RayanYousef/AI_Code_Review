@@ -1,0 +1,181 @@
+# Global Settings
+language: en-US
+
+tone_instructions: |
+  Be extremely strict and uncompromising in enforcing CodingGuidelines.md.
+  Treat every violation as a critical issue that must be fixed.
+  Use formal, professional language when pointing out violations.
+  Always reference the specific section of CodingGuidelines.md.
+  Never accept or suggest workarounds for violations - demand strict compliance.
+
+# Knowledge Base Configuration
+knowledge_base:
+  opt_out: false
+  learnings:
+    enabled: true
+  code_guidelines:
+    enabled: true
+    filePatterns:
+      - "**/CodingGuidelines.md"
+      - "**/.rules/CodingGuidelines.md"
+
+review_instructions: |
+  PRIMARY STANDARD: Enforce ALL rules from CodingGuidelines.md with ZERO TOLERANCE.
+
+  CRITICAL ENFORCEMENT AREAS:
+
+  1. **SOLID PRINCIPLES** (Section 14-19):
+     - Single Responsibility: Flag any class/method doing multiple things
+     - Open/Closed: Check for hard-coded modifications instead of extensions
+     - Liskov Substitution: Verify subtype compatibility
+     - Interface Segregation: Detect fat interfaces
+     - Dependency Inversion: Flag concrete dependencies
+
+  2. **KISS PRINCIPLE** (Section 21-24):
+     - Reject complex solutions when simple ones exist
+     - Flag unnecessary abstractions or patterns
+
+  3. **COMMAND & QUERY SEPARATION** (Section 26-29):
+     - Commands: Change state, return void
+     - Queries: Return data, no state changes
+     - Flag methods doing both
+
+  4. **DRY PRINCIPLE** (Section 31-34):
+     - Identify ALL code duplication (3+ lines)
+     - Require extraction to reusable methods/classes
+
+  5. **FUNCTION DESIGN** (Section 36-39):
+     - ONE responsibility per function
+     - Split multi-purpose functions immediately
+
+  6. **C# CODING STYLE** (Section 42+):
+     - NO 'var' usage - EVER (Section 66)
+     - PascalCase: Classes, Methods, Public fields/properties
+     - camelCase: Local variables, parameters
+     - _camelCase: Private/protected fields
+     - Explicit visibility modifiers always (Section 63)
+     - Null conditional for delegates/events (Section 67)
+
+  7. **UNITY-SPECIFIC** (Section 73+):
+     - [SerializeField] private fields only (Section 82-83)
+     - Cache components in Awake/Start (Section 76-78)
+     - NO LINQ in hot paths (Section 93)
+     - Use NonAlloc methods (Section 94)
+     - NO public Unity lifecycle methods (Section 99-100)
+     - Button methods: OnButtonClick_ prefix (Section 87)
+     - Naming: _levelManager, transformRef, rigidbodyComponent (Section 79)
+
+  VIOLATION REPORTING FORMAT:
+  ═══════════════════════════════════════
+  VIOLATION: [PRINCIPLE/CATEGORY]
+  LINE(S): [EXACT LINE NUMBERS]
+  ISSUE: [DETAILED EXPLANATION + IMPACT]
+  SOLUTION:
+  ```csharp
+  [CORRECTED CODE WITH FIX]
+  ```
+  GUIDELINE REFERENCE: [CodingGuidelines.md Section X]
+  ═══════════════════════════════════════
+
+  ACCEPT NO COMPROMISES. EVERY VIOLATION IS A BLOCKING ISSUE.
+
+# Reviews Configuration
+reviews:
+  profile: assertive  # More feedback for strict guideline enforcement
+
+  # Core review settings
+  high_level_summary: true
+  review_status: true
+  commit_status: true
+  fail_commit_status: true
+
+  # Walkthrough settings
+  collapse_walkthrough: false  # Keep violations visible
+  changed_files_summary: true
+  sequence_diagrams: false  # Focus on code quality, not diagrams
+  estimate_code_review_effort: true
+  poem: false  # No poems - focus on violations
+
+  # Path filtering
+  path_filters:
+    - "!**/settings.json"
+    - "!**/*.meta"
+    - "!**/Packages/**"  # Unity packages
+    - "!**/Library/**"   # Unity Library
+    - "!**/Temp/**"      # Unity temp files
+
+  path_instructions:
+    - path: "**/*.cs"
+      instructions: |
+        ZERO-TOLERANCE CODE REVIEW FOR C# FILES:
+
+        AUTOMATED VIOLATION SCANNING:
+
+        **IMMEDIATE REJECTION CRITERIA:**
+        - Any 'var' keyword usage (MANDATORY explicit types)
+        - Public Unity lifecycle methods (Awake, Start, Update, etc.)
+        - LINQ usage in Update/FixedUpdate/LateUpdate
+        - GetComponent() calls outside Awake/Start
+        - Missing [SerializeField] on private serialized fields
+        - Non-PascalCase class/method names
+        - Non-camelCase local variables
+        - Non-_camelCase private fields
+
+        **FUNCTION ANALYSIS:**
+        - Count responsibilities per function (reject if >1)
+        - Check for state mutation + return values (CQS violation)
+        - Identify code duplication (3+ lines)
+
+        **UNITY PERFORMANCE CHECKS:**
+        - Component references cached?
+        - NonAlloc physics methods used?
+        - String operations in hot paths?
+        - Event delegates use null conditional?
+
+        **SOLID COMPLIANCE:**
+        - Class has single responsibility?
+        - Dependencies injected (not hardcoded)?
+        - Interfaces properly segregated?
+
+        FOR EACH VIOLATION FOUND:
+        ═══════════════════════════════════════
+        BLOCKING VIOLATION DETECTED
+        LINE(S): [EXACT NUMBERS]
+        CRITICAL ISSUE: [IMPACT DESCRIPTION]
+        REQUIRED FIX:
+        ```csharp
+        [EXACT CORRECTED CODE]
+        ```
+        VIOLATION TYPE: [SOLID/KISS/DRY/etc.]
+        GUIDELINE: CodingGuidelines.md Section [X]
+        ═══════════════════════════════════════
+
+    - path: "**/*.md"
+      instructions: |
+        Documentation files should follow project standards.
+        Check for consistency with CodingGuidelines.md references.
+
+# Chat Configuration
+chat:
+  auto_reply: true
+  art: false  # Focus on technical discussions, not art
+
+# Code Generation Configuration
+code_generation:
+  docstrings:
+    language: en-US
+    path_instructions:
+      - path: "**/*.cs"
+        instructions: |
+          Generate docstrings that reference CodingGuidelines.md compliance.
+          Include XML documentation tags for all public members.
+          Follow Microsoft's documentation standards.
+
+  unit_tests:
+    path_instructions:
+      - path: "**/*.cs"
+        instructions: |
+          Generate unit tests following SOLID principles.
+          Use explicit types (no var).
+          Follow naming conventions from CodingGuidelines.md.
+          Test single responsibilities, not multiple concerns.
