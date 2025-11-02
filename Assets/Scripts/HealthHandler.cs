@@ -6,10 +6,10 @@ using System.Linq;
 
 public class HealthHandler : MonoBehaviour
 {
-    public var currentHealth = 100f;
-    public var maxHealth = 100f;
-    public var isAlive = true;
-    public var regenerationRate = 5f;
+    public float currentHealth = 100f;
+    public float maxHealth = 100f;
+    public bool isAlive = true;
+    public float regenerationRate = 5f;
     
     public Slider healthBar;
     public TextMeshProUGUI healthText;
