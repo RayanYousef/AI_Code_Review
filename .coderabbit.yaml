@@ -9,8 +9,8 @@ knowledge_base:
   code_guidelines:
     enabled: true
     filePatterns:
-      - "**/.rules/CodingGuidelines.md"
-      - "**/CodingGuidelines.md"
+      - "**/.rules/AGENTS.md"
+      - "**/AGENTS.md"
 
 reviews:
   profile: assertive
