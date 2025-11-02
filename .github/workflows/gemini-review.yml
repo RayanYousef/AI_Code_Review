@@ -1,0 +1,43 @@
+name: Gemini Code Review
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  gemini-review:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Gemini Code Assist Review
+        uses: google-gemini/code-review-action@v1
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          gemini-api-key: ${{ secrets.GEMINI_API_KEY }}
+          context-files: |
+            Assets/AGENTS.md
+          custom-instructions: |
+            STRICTLY enforce all rules from Assets/AGENTS.md.
+            
+            For every violation found, output:
+            VIOLATION: [Category]
+            LINE(S): [line numbers]
+            ISSUE: [explanation]
+            SOLUTION: [corrected code]
+            GUIDELINE: [AGENTS.md section reference]
+            
+            Focus on:
+            - SOLID principles (especially Open/Closed with switch/if-else chains)
+            - Naming conventions (PascalCase, _camelCase, camelCase)
+            - No var usage
+            - Single Responsibility Principle
+            - Command Query Separation
+            - Unity best practices (SerializeField, zero GC, no public Unity methods)
+            - VContainer dependency injection patterns
+
