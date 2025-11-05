@@ -58,5 +58,6 @@
     },
     "dotnet.defaultSolution": "AI_Code_Review.sln",
     "coderabbit.agentType": "Claude Code",
-    "coderabbit.autoReviewMode": "disabled"
+    "coderabbit.autoReviewMode": "disabled",
+    "codium.codeCompletion.enable": true
 }
