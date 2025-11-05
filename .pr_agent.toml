@@ -2,10 +2,149 @@
 add_repo_metadata = true
 
 [pr_reviewer]
+<<<<<<< Updated upstream
 extra_instructions = """
 Read Assets/AGENTS.md before analyzing a pull request.
 Apply every directive in that file to the diff under review.
 Describe each finding with the violated section title and a fix that satisfies the rule.
+=======
+# Enforce AGENTS.md guidelines - full content embedded
+extra_instructions = """
+# CODING GUIDELINES FOR AI CODE REVIEW PROJECT
+
+This document contains the coding standards and best practices for our Unity project. Please follow these guidelines to ensure code quality, consistency, and maintainability.
+
+## GENERAL PRINCIPLES
+
+### SOLID Principles
+- **Single Responsibility**: Each class should have only one reason to change. One job, one responsibility.
+- **Open/Closed**: Classes should be open for extension but closed for modification. Avoid switch/if-else chains for type checking.
+- **Liskov Substitution**: Subtypes must be substitutable for their base types without breaking functionality.
+- **Interface Segregation**: Clients should not be forced to depend on interfaces they don't use. Split fat interfaces into smaller ones.
+- **Dependency Inversion**: Depend on abstractions, not concretions. Use VContainer for dependency injection.
+
+### KISS Principle (Keep It Simple, Stupid)
+- Write simple, clear code that is easy to understand
+- Avoid unnecessary complexity
+- Prefer straightforward solutions over clever ones
+
+### Command and Query Separation (CQS)
+- Commands change state and return void
+- Queries return data and do not change state
+- Methods should either do something OR return something, not both
+
+### DRY Principle (Don't Repeat Yourself)
+- Avoid code duplication
+- Extract common functionality into reusable methods or classes
+- Use inheritance, composition, or utility classes when appropriate
+
+### Function Design
+- Functions should have only one responsibility
+- If a function handles multiple tasks, split it into smaller functions
+- Each function should be focused on a single purpose
+
+## C# CODING STYLE
+
+### Naming Conventions
+#### General Rules
+- **Classes, Methods, Enumerations, Public Fields, Public Properties, Namespaces**: Use PascalCase
+- **Local Variables, Parameters**: Use camelCase
+- **Private, Protected, Internal Fields and Properties**: Use _camelCase (underscore prefix)
+- Naming is the same regardless of modifiers (const, static, readonly, etc.)
+- Acronyms are treated as single words: MyRpc (not MyRPC)
+- Interface names start with 'I': IInterface
+
+#### Special Cases
+- Boolean properties should start with questions: IsEnabled, HasValue, DidComplete
+- Events should be prefixed with "On": OnValueChanged
+- Event listener methods end with "Callback": ValueChangedCallback
+
+### Code Structure
+- Always specify visibility modifiers (private, public, etc.), even when it's the default
+- Visibility modifier should be first: `public static` not `static public`
+- Avoid `this.` unless necessary for clarity
+- Avoid `var` - always use explicit types
+- Use null conditional operator for delegates/events: `SomeDelegate?.Invoke()`
+
+## UNITY SPECIFIC GUIDELINES
+
+### Component References
+- **Prefer `[SerializeField]` over `GetComponent()`**: Serialize component references in the inspector whenever possible
+- Only use `GetComponent()` for components that are created at runtime or cannot be serialized in the editor
+- If you must use `GetComponent()`, cache the reference in Awake() or Start(), never in Update()
+- Never call `GetComponent()` in Update() or frequently called methods
+- Name variables based on their type: `_levelManager`, `_rigidbody`, `_animator`
+
+### Serialization
+- Use `[SerializeField]` for private fields that need Unity editor access
+- Always write `private` with `[SerializeField]`: `[SerializeField] private int _health;`
+- Prefer auto-implemented properties when possible: `public int PageNumber { get; set; }`
+
+### Method Naming
+- Editor button methods start with "OnButtonClick_": `OnButtonClick_StartGame`
+- These methods should handle button feedback and call other methods for logic
+- Avoid having other methods call OnButtonClick_ methods directly
+- Avoid simple one-word method names: Use `StartInteraction` instead of `Interact`
+
+### Performance (Zero Garbage Collection)
+- Avoid LINQ - use for-loops instead (LINQ creates garbage)
+- Use NonAlloc methods: `Physics.RaycastNonAlloc` instead of `Physics.Raycast`
+- Cache strings and avoid string concatenation in loops
+- Reference: https://docs.unity3d.com/Manual/performance-garbage-collection-best-practices.html
+
+### MonoBehaviour Methods
+- Don't use public access modifiers for Unity-specific methods (Start, Update, etc.)
+- Keep these methods private or remove access modifier
+
+## FILE ORGANIZATION
+
+### File Naming
+- Files and directories use PascalCase: MyClass.cs, MyFolder/
+- Prefer one main class per file
+- File names should match the main class name
+
+### Class Member Ordering
+Group members in this order:
+1. Nested classes, enums, delegates, events
+2. Static, const, readonly fields
+3. Fields and properties
+4. Constructors and destructors
+5. Methods
+
+### Access Modifier Ordering
+Within each group, order by accessibility:
+1. Public
+2. Internal
+3. Protected internal
+4. Protected
+5. Private
+
+## VIOLATION REPORTING FORMAT
+
+For every violation found, output in this exact format:
+VIOLATION: [Category]
+LINE(S): [line numbers]
+ISSUE: [brief explanation]
+SOLUTION: [corrected code]
+GUIDELINE: [specific AGENTS.md section reference]
+
+## CHECKLIST - VERIFY ALL THESE RULES:
+1. Type declarations: All 'var' must be replaced with explicit types
+2. Naming conventions: PascalCase for classes/methods, _camelCase for private fields, camelCase for locals
+3. Single responsibility: Each function must have only ONE responsibility
+4. SOLID principles: Check Open/Closed, Liskov, Interface Segregation, Dependency Inversion
+5. DRY principle: No code duplication
+6. CQS: Methods must either command (modify state) OR query (return data), not both
+7. Explicit visibility modifiers: Always specify private/public
+8. Boolean naming: Start with Is/Has/Did
+9. Event naming: End with "Callback"
+10. Button methods: Start with "OnButtonClick_"
+11. Unity methods: Awake/Start/Update must NOT be public
+12. LINQ in loops: Flag and suggest for-loops instead
+13. GetComponent: Prefer [SerializeField], only use GetComponent for runtime objects
+14. Serialization: Use '[SerializeField] private' format
+15. Zero Garbage Collection: Avoid allocations in Update loops
+>>>>>>> Stashed changes
 """
 require_score_review = true
 require_tests_review = true
@@ -15,7 +154,30 @@ num_code_suggestions = 10
 
 [pr_code_suggestions]
 extra_instructions = """
+<<<<<<< Updated upstream
 Propose changes only when they comply with every rule in Assets/AGENTS.md.
 Explain how the suggestion restores alignment with the referenced section.
+=======
+When suggesting code improvements, STRICTLY follow ALL guidelines from the embedded AGENTS.md content above.
+
+Key requirements:
+- Use explicit types, never 'var'
+- PascalCase for classes/methods, _camelCase for private fields
+- Single responsibility principle - one function = one purpose
+- SOLID principles compliance
+- Unity best practices: SerializeField over GetComponent, zero GC, proper naming
+- CQS: Commands modify state (void return), Queries return data (no state change)
+- DRY: No code duplication
+- Explicit visibility modifiers always
+- Boolean methods start with Is/Has/Did
+- Events end with "Callback"
+- Button methods start with "OnButtonClick_"
+- Unity methods (Start/Update/Awake) must NOT be public
+
+Provide specific code examples following these patterns when suggesting improvements.
+>>>>>>> Stashed changes
 """
+
+[pr_description]
+generate_ai_title = true
 
