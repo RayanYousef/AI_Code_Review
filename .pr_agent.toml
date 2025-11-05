@@ -1,38 +1,12 @@
 [config]
-# Enable automatic detection of AGENTS.md and other repo metadata files
 add_repo_metadata = true
 
 [pr_reviewer]
-# Enforce AGENTS.md guidelines
 extra_instructions = """
-STRICTLY enforce all rules from AGENTS.md located in Assets/AGENTS.md.
-
-For every violation found, output:
-VIOLATION: [Category]
-LINE(S): [line numbers]
-ISSUE: [explanation]
-SOLUTION: [corrected code]
-GUIDELINE: [AGENTS.md section reference]
-
-Check ALL violations:
-1. Type declarations: All 'var' must be replaced with explicit types
-2. Naming conventions: PascalCase for classes/methods, _camelCase for private fields, camelCase for locals
-3. Single responsibility: Each function must have only ONE responsibility
-4. SOLID principles: Check Open/Closed, Liskov, Interface Segregation, Dependency Inversion
-5. DRY principle: No code duplication
-6. CQS: Methods must either command (modify state) OR query (return data), not both
-7. Explicit visibility modifiers: Always specify private/public
-8. Boolean naming: Start with Is/Has/Did
-9. Event naming: End with "Callback"
-10. Button methods: Start with "OnButtonClick_"
-11. Unity methods: Awake/Start/Update must NOT be public
-12. LINQ in loops: Flag and suggest for-loops instead
-13. GetComponent: Prefer [SerializeField], only use GetComponent for runtime objects
-14. Serialization: Use '[SerializeField] private' format
-15. Zero Garbage Collection: Avoid allocations in Update loops
+Read Assets/AGENTS.md before analyzing a pull request.
+Apply every directive in that file to the diff under review.
+Describe each finding with the violated section title and a fix that satisfies the rule.
 """
-
-# Enable comprehensive analysis
 require_score_review = true
 require_tests_review = true
 require_security_review = true
@@ -41,7 +15,7 @@ num_code_suggestions = 10
 
 [pr_code_suggestions]
 extra_instructions = """
-Follow all guidelines from Assets/AGENTS.md when suggesting code improvements.
-Ensure all suggestions align with SOLID principles, naming conventions, and Unity best practices.
+Propose changes only when they comply with every rule in Assets/AGENTS.md.
+Explain how the suggestion restores alignment with the referenced section.
 """
 
