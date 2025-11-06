@@ -1,2 +1,52 @@
 [config]
 model = "anthropic/claude-sonnet-4-5-20250929"
+add_repo_metadata = true
+max_model_tokens = 200000
+temperature = 0.1
+reasoning_effort = "high"
+enable_claude_extended_thinking = true
+extended_thinking_budget_tokens = 4096
+extended_thinking_max_output_tokens = 8192
+ai_timeout = 300
+
+[pr_reviewer]
+require_score_review = true
+require_tests_review = true
+require_security_review = true
+inline_code_comments = true
+num_code_suggestions = 20
+num_max_findings = 20
+persistent_comment = true
+enable_intro_text = true
+extra_instructions = "Be EXTREMELY thorough. Check EVERY line of code against best_practices.md. Flag ALL violations including: naming conventions, SOLID principles, DRY violations, CQS violations, Unity-specific issues, performance problems, code structure issues. Do not miss any violations. Be strict and comprehensive."
+
+[pr_code_suggestions]
+num_suggestions = 20
+num_best_practice_suggestions = 15
+commitable_code_suggestions = true
+enable_chat_text = true
+enable_chat_in_code_suggestions = true
+persistent_comment = true
+publish_output_no_suggestions = true
+suggestions_score_threshold = 0
+auto_extended_mode = true
+num_code_suggestions_per_chunk = 5
+max_number_of_calls = 5
+parallel_calls = false
+final_clip_factor = 1.0
+focus_only_on_problems = true
+extra_instructions = "Be EXTREMELY thorough and strict. Review EVERY function, class, variable, and line against best_practices.md. Find ALL violations: Single Responsibility violations, naming convention errors (PascalCase, camelCase, _camelCase), var usage, LINQ in Update loops, GetComponent in Update, missing SerializeField, CQS violations, DRY violations, SOLID principle violations, Unity best practices. Do not stop at one issue - find them ALL. When the user manually applies a suggestion, include DETAILED inline comments explaining WHAT changed, WHY, and which best practice guideline from best_practices.md is being followed."
+
+[best_practices]
+content = "best_practices.md"
+max_lines_allowed = 2000
+enable_global_best_practices = true
+
+[auto_best_practices]
+enable_auto_best_practices = true
+utilize_auto_best_practices = true
+max_patterns = 30
+extra_instructions = "Detect ALL patterns from best_practices.md. Be extremely thorough in pattern detection. Find violations of: Single Responsibility, Open/Closed, Liskov Substitution, Interface Segregation, Dependency Inversion, DRY, KISS, CQS, naming conventions, Unity-specific rules, performance issues."
+
+[pr_description]
+generate_ai_title = true
