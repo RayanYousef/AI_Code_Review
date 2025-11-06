@@ -1,40 +1,57 @@
 [config]
 model = "anthropic/claude-sonnet-4-5-20250929"
-add_repo_metadata = true
-add_repo_metadata_file_list = ["best_practices.md", "AGENTS.MD", "CLAUDE.MD", "QODO.MD"]
 max_model_tokens = 200000
 temperature = 0.1
 reasoning_effort = "high"
+
 enable_claude_extended_thinking = true
 extended_thinking_budget_tokens = 8192
 extended_thinking_max_output_tokens = 16384
 ai_timeout = 300
+
 allow_dynamic_context = true
 max_extra_lines_before_dynamic_context = 20
 patch_extra_lines_before = 10
 patch_extra_lines_after = 10
+
+# Make sure the big review window shows up
+verbosity_level = 2
+publish_output = true
+publish_output_progress = true
+
+# Optional: bring extra metadata into context
+add_repo_metadata = true
+add_repo_metadata_file_list = ["AGENTS.MD", "CLAUDE.MD", "QODO.MD"]
 
 [pr_reviewer]
 require_score_review = true
 require_tests_review = true
 require_security_review = true
 require_estimate_effort_to_review = true
+
 inline_code_comments = true
 num_code_suggestions = 30
 num_max_findings = 50
 persistent_comment = true
 enable_intro_text = true
 publish_output_no_suggestions = true
-extra_instructions = "CRITICAL: Review EVERY single line of code against best_practices.md. You MUST find ALL violations. Check: (1) Naming: PascalCase for classes/methods/public, _camelCase for private fields, camelCase for locals - NO exceptions, (2) Single Responsibility: Every function must have ONE job - flag ALL multi-responsibility functions, (3) SOLID: Check ALL 5 principles on EVERY class, (4) DRY: Find ALL code duplication, (5) CQS: Methods must either command OR query - flag ALL violations, (6) Unity: SerializeField over GetComponent, NO LINQ in Update, NO GetComponent in Update, proper method naming (OnButtonClick_, Callback suffix), (7) Code Structure: NO 'var', explicit visibility modifiers, proper boolean naming (Is/Has/Did), (8) Performance: Flag ALL garbage collection issues, LINQ usage, string concatenation in loops. Be EXTREMELY thorough - do not stop until you've checked every function, every variable, every line. Missing violations is unacceptable."
+
+extra_instructions = """
+Use the repository's best_practices.md as the main reference.
+When you find a violation, mention which section/pattern in best_practices.md it breaks.
+Prefer many small, precise findings over a few vague ones.
+"""
 
 [pr_code_suggestions]
 num_suggestions = 30
 num_best_practice_suggestions = 25
 commitable_code_suggestions = true
+
 enable_chat_text = true
 enable_chat_in_code_suggestions = true
 persistent_comment = true
 publish_output_no_suggestions = true
+
 suggestions_score_threshold = 0
 auto_extended_mode = true
 num_code_suggestions_per_chunk = 8
@@ -47,18 +64,8 @@ apply_suggestions_checkbox = true
 new_score_mechanism = true
 new_score_mechanism_th_high = 9
 new_score_mechanism_th_medium = 5
-extra_instructions = "MANDATORY: You MUST find EVERY violation in best_practices.md. Review systematically: (1) Scan EVERY function for Single Responsibility violations - if a function does more than ONE thing, flag it, (2) Check EVERY variable name: classes/methods/public = PascalCase, private fields = _camelCase, locals = camelCase, booleans = Is/Has/Did prefix, events = On prefix, callbacks = Callback suffix, (3) Find ALL 'var' usage - replace with explicit types, (4) Check EVERY Unity MonoBehaviour: Awake/Start/Update must NOT be public, (5) Find ALL GetComponent calls in Update loops - must be cached, (6) Find ALL LINQ usage in Update or frequently called methods - must use for-loops, (7) Check ALL SerializeField usage - must be 'private', (8) Find ALL CQS violations - methods that both modify state AND return data, (9) Check ALL SOLID violations: OCP (switch/if-else chains), LSP (improper inheritance), ISP (fat interfaces), DIP (concrete dependencies), (10) Find ALL DRY violations - duplicated code blocks, (11) Performance: string concatenation in loops, new objects in Update, missing NonAlloc methods. When user applies suggestion, add DETAILED inline comments: // ✅ [BEST PRACTICE]: [Name] - [What changed]. [Why]. See: best_practices.md#[section]"
 
-[best_practices]
-content = "best_practices.md"
-max_lines_allowed = 2000
-enable_global_best_practices = true
-
-[auto_best_practices]
-enable_auto_best_practices = true
-utilize_auto_best_practices = true
-max_patterns = 50
-extra_instructions = "Detect ALL patterns from best_practices.md. Be EXTREMELY thorough. Find violations of: (1) Single Responsibility Principle, (2) Open/Closed Principle, (3) Liskov Substitution Principle, (4) Interface Segregation Principle, (5) Dependency Inversion Principle, (6) DRY Principle, (7) KISS Principle, (8) Command Query Separation, (9) Naming conventions (PascalCase, camelCase, _camelCase), (10) Unity-specific rules (SerializeField, GetComponent, LINQ, Update methods), (11) Performance issues (garbage collection, LINQ, string concatenation), (12) Code structure (explicit types, visibility modifiers, boolean naming). Do not stop until you've detected ALL patterns."
-
-[pr_description]
-generate_ai_title = true
+extra_instructions = """
+Base every suggestion on best_practices.md.
+Briefly explain which best-practice is being enforced in a comment next to the suggestion.
+"""
