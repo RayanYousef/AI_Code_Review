@@ -1,5 +1,5 @@
 [config]
-model = "claude-3-5-sonnet-20241022"
+model = "claude-opus-4-1-20250805"
 add_repo_metadata = true
 git_provider = "github"
 max_model_tokens = 200000
@@ -14,6 +14,9 @@ inline_code_comments = true
 num_code_suggestions = 10
 review_format = "multi_file"
 num_max_findings = 10
+publish_output_no_suggestions = false
+persistent_comment = true
+enable_intro_text = true
 
 [pr_code_suggestions]
 num_suggestions = 10
@@ -24,7 +27,7 @@ suggestions_score_threshold = 0
 commitable_code_suggestions = true
 enable_chat_text = true
 inline_code_comments = true
-extra_instructions = "For every code suggestion applied, add detailed inline comments explaining: (1) WHAT changed and WHY, (2) Which best practice guideline is being followed (reference best_practices.md), (3) How this improves code quality (readability, performance, maintainability, SOLID principles, etc.). Format comments as: // ✅ [BEST PRACTICE]: [Guideline Name] - [Explanation]. Reference: best_practices.md#[section]"
+extra_instructions = "When the user manually applies or accepts a code suggestion, include DETAILED inline comments in the suggested code. For each change: (1) Add a comment explaining WHAT changed and WHY, (2) Reference the specific best practice guideline from best_practices.md (e.g., 'Single Responsibility Principle'), (3) Explain the quality improvement (readability, performance, maintainability, SOLID adherence). Use format: // ✅ [BEST PRACTICE]: [Name] - [What changed]. [Why]. See: best_practices.md#[section]. Include context comments above and below changes showing the before/after reasoning."
 
 [pr_description]
 generate_ai_title = true
