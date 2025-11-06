@@ -1,35 +1,5 @@
 # Coding Guidelines for AI Code Review Project
 
-## QODO Instructions (Automated Code Review)
-
-**IMPORTANT: QODO must review and enforce ALL guidelines in this document.**
-
-### Review Process
-- Review all code changes against these guidelines
-- Flag violations with specific inline code comments
-- Point to the exact guideline violated with reference to this document
-- Use the format: `// ❌ VIOLATION: [Guideline Name] - [Description] (See: best_practices.md#[section])`
-- Be strict and comprehensive - do not miss violations
-- For each violation, provide a concrete example of how to fix it
-
-### Enforcement Rules
-1. **Single Responsibility**: Ensure each function/class has ONE reason to change
-2. **SOLID Principles**: Verify all five SOLID principles are followed
-3. **Naming Conventions**: Enforce PascalCase, camelCase, _camelCase, and special rules strictly
-4. **Code Structure**: Require explicit visibility modifiers, ban `var`, use null conditional operators
-5. **Unity Specific**: Enforce SerializeField over GetComponent, zero garbage collection, proper method naming
-6. **Command Query Separation**: Commands return void, Queries return data - never both
-7. **DRY Principle**: Identify code duplication and suggest extraction
-8. **KISS Principle**: Flag unnecessary complexity
-9. **Performance**: Ban LINQ in loops, enforce NonAlloc methods, cache references
-
-### Comment on Every Violation
-- Add inline code comments for violations
-- Suggest the correct approach
-- Reference the specific example from this document
-
----
-
 This document contains the coding standards and best practices for our Unity project. Please follow these guidelines to ensure code quality, consistency, and maintainability.
 
 ## Table of Contents
