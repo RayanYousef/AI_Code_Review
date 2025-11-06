@@ -21,6 +21,10 @@ num_best_practice_suggestions = 10
 auto_generate = true
 rank_suggestions = true
 suggestions_score_threshold = 0
+commitable_code_suggestions = true
+enable_chat_text = true
+inline_code_comments = true
+extra_instructions = "For every code suggestion applied, add detailed inline comments explaining: (1) WHAT changed and WHY, (2) Which best practice guideline is being followed (reference best_practices.md), (3) How this improves code quality (readability, performance, maintainability, SOLID principles, etc.). Format comments as: // ✅ [BEST PRACTICE]: [Guideline Name] - [Explanation]. Reference: best_practices.md#[section]"
 
 [pr_description]
 generate_ai_title = true
