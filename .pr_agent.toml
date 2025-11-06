@@ -34,7 +34,8 @@ num_code_suggestions_per_chunk = 5
 max_number_of_calls = 5
 parallel_calls = false
 final_clip_factor = 1.0
-focus_only_on_problems = true
+focus_only_on_problems = false
+apply_suggestions_checkbox = true
 extra_instructions = "Be EXTREMELY thorough and strict. Review EVERY function, class, variable, and line against best_practices.md. Find ALL violations: Single Responsibility violations, naming convention errors (PascalCase, camelCase, _camelCase), var usage, LINQ in Update loops, GetComponent in Update, missing SerializeField, CQS violations, DRY violations, SOLID principle violations, Unity best practices. Do not stop at one issue - find them ALL. When the user manually applies a suggestion, include DETAILED inline comments explaining WHAT changed, WHY, and which best practice guideline from best_practices.md is being followed."
 
 [best_practices]
