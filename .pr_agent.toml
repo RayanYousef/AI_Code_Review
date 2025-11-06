@@ -1,5 +1,4 @@
 [config]
-model = "anthropic/claude-sonnet-4-5-20250929"
 max_model_tokens = 200000
 temperature = 0.1
 reasoning_effort = "high"
@@ -40,32 +39,4 @@ extra_instructions = """
 Use the repository's best_practices.md as the main reference.
 When you find a violation, mention which section/pattern in best_practices.md it breaks.
 Prefer many small, precise findings over a few vague ones.
-"""
-
-[pr_code_suggestions]
-num_suggestions = 30
-num_best_practice_suggestions = 25
-commitable_code_suggestions = true
-
-enable_chat_text = true
-enable_chat_in_code_suggestions = true
-persistent_comment = true
-publish_output_no_suggestions = true
-
-suggestions_score_threshold = 0
-auto_extended_mode = true
-num_code_suggestions_per_chunk = 8
-max_number_of_calls = 8
-parallel_calls = false
-final_clip_factor = 1.0
-decouple_hunks = true
-focus_only_on_problems = false
-apply_suggestions_checkbox = true
-new_score_mechanism = true
-new_score_mechanism_th_high = 9
-new_score_mechanism_th_medium = 5
-
-extra_instructions = """
-Base every suggestion on best_practices.md.
-Briefly explain which best-practice is being enforced in a comment next to the suggestion.
 """
