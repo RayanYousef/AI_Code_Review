@@ -1,11 +1,12 @@
-[config] 
+[config]
+# Be explicit about the model, even though it's also the global default
+model = "gpt-5-2025-08-07"
+fallback_models = ["o4-mini"]
+
 max_model_tokens = 200000
 temperature = 0.1
 reasoning_effort = "high"
 
-enable_claude_extended_thinking = true
-extended_thinking_budget_tokens = 8192
-extended_thinking_max_output_tokens = 16384
 ai_timeout = 300
 
 allow_dynamic_context = true
@@ -13,7 +14,7 @@ max_extra_lines_before_dynamic_context = 20
 patch_extra_lines_before = 10
 patch_extra_lines_after = 10
 
-# Make sure the big review window shows up
+# Make sure the big review + PR Code Suggestions comments show up
 verbosity_level = 2
 publish_output = true
 publish_output_progress = true
@@ -21,6 +22,7 @@ publish_output_progress = true
 # Optional: bring extra metadata into context
 add_repo_metadata = true
 add_repo_metadata_file_list = ["AGENTS.MD", "CLAUDE.MD", "QODO.MD"]
+
 
 [pr_reviewer]
 require_score_review = true
@@ -30,26 +32,50 @@ require_estimate_effort_to_review = true
 
 inline_code_comments = true
 num_code_suggestions = 30
-num_max_findings = 50
+
+# Allow MANY findings from /review
+num_max_findings = 80
+
 persistent_comment = true
 enable_intro_text = true
 publish_output_no_suggestions = true
 
 extra_instructions = """
-Use the repository's best_practices.md as the main reference.
-When you find a violation, mention which section/pattern in best_practices.md it breaks.
-Prefer many small, precise findings over a few vague ones.
+Use this repository's best_practices.md as the single source of truth.
 """
 
-[pr_code_suggestions]
-# Allow more suggestions overall
-num_suggestions = 40
 
-# IMPORTANT: allow many best-practice-based suggestions (instead of the default 1)
-num_best_practice_suggestions = 30
+[pr_code_suggestions]  # /improve (PR Code Suggestions ✨)
+# Keep the nice table comment (not only inline apply-suggestions)
+commitable_code_suggestions = false
 
-# Be aggressive in looking for issues
-suggestions_depth = "exhaustive"
-
-# Also include style / best-practice violations, not only “bugs”
+# Very important: don't hide style / best-practice issues
 focus_only_on_problems = false
+
+# Be generous with suggestions
+suggestions_score_threshold = 0
+auto_extended_mode = true
+
+# For each chunk of the diff, allow a lot of suggestions
+num_code_suggestions_per_chunk = 10
+
+# Allow MANY best-practice suggestions instead of the default 1
+num_best_practice_suggestions = 50
+
+# Allow more passes over the patch
+max_number_of_calls = 8
+parallel_calls = false
+
+persistent_comment = true
+publish_output_no_suggestions = true
+apply_suggestions_checkbox = true
+
+new_score_mechanism = true
+new_score_mechanism_th_high = 9
+new_score_mechanism_th_medium = 7
+
+extra_instructions = """
+Generate as many small, concrete suggestions as needed to fix ALL violations of best_practices.md in the diff.
+Do not merge multiple distinct issues into one vague suggestion.
+Err on the side of being nit-picky rather than missing a violation.
+"""
