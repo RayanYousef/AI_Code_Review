@@ -1,5 +1,10 @@
 [config]
+model = "claude-3-5-sonnet-20241022"
 add_repo_metadata = true
+git_provider = "github"
+max_model_tokens = 200000
+temperature = 0.2
+reasoning_effort = "high"
 
 [pr_reviewer]
 require_score_review = true
@@ -7,6 +12,30 @@ require_tests_review = true
 require_security_review = true
 inline_code_comments = true
 num_code_suggestions = 10
+review_format = "multi_file"
+num_max_findings = 10
+
+[pr_code_suggestions]
+num_suggestions = 10
+num_best_practice_suggestions = 10
+auto_generate = true
+rank_suggestions = true
+suggestions_score_threshold = 0
 
 [pr_description]
 generate_ai_title = true
+generate_ai_description = true
+
+[pr_config]
+auto_approve_tiny_pr = false
+skip_trivial_pr = false
+
+[best_practices]
+content = "best_practices.md"
+max_lines_allowed = 2000
+enable_global_best_practices = true
+
+[auto_best_practices]
+enable_auto_best_practices = true
+utilize_auto_best_practices = true
+max_patterns = 20
