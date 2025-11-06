@@ -79,3 +79,13 @@ Generate as many small, concrete suggestions as needed to fix ALL violations of 
 Do not merge multiple distinct issues into one vague suggestion.
 Err on the side of being nit-picky rather than missing a violation.
 """
+
+[auto_best_practices]
+enable_auto_best_practices = true
+utilize_auto_best_practices = true
+content = "best_practices.md"
+max_patterns = 80
+extra_instructions = """
+Extract all individual rules and bullet points under sections named 'Rules' or 'Anti-Patterns'.
+Each bullet should be treated as a separate best practice.
+"""
