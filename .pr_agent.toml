@@ -12,28 +12,17 @@ require_tests_review = true
 require_security_review = true
 inline_code_comments = true
 num_code_suggestions = 10
-review_format = "multi_file"
-num_max_findings = 10
-publish_output_no_suggestions = false
-persistent_comment = true
-enable_intro_text = true
 
 [pr_code_suggestions]
 num_suggestions = 10
 num_best_practice_suggestions = 10
-auto_generate = true
-rank_suggestions = true
-suggestions_score_threshold = 0
 commitable_code_suggestions = true
 enable_chat_text = true
 enable_chat_in_code_suggestions = true
-persistent_comment = true
-publish_output_no_suggestions = true
 extra_instructions = "When the user manually applies or accepts a code suggestion via the Apply button or through Chat, include DETAILED inline comments in the suggested code. For each change: (1) Add a comment explaining WHAT changed and WHY, (2) Reference the specific best practice guideline from best_practices.md (e.g., 'Single Responsibility Principle'), (3) Explain the quality improvement (readability, performance, maintainability, SOLID adherence). Use format: // ✅ [BEST PRACTICE]: [Name] - [What changed]. [Why]. See: best_practices.md#[section]. Include context comments above and below changes showing the before/after reasoning. Do NOT add comments automatically - only when the user explicitly applies the suggestion."
 
 [pr_description]
 generate_ai_title = true
-generate_ai_description = true
 
 [pr_config]
 auto_approve_tiny_pr = false
