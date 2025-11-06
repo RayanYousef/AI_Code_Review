@@ -8,7 +8,5 @@ require_security_review = true
 inline_code_comments = true
 num_code_suggestions = 10
 
-[pr_code_suggestions]
-
 [pr_description]
 generate_ai_title = true
