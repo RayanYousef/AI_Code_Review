@@ -1,6 +1,8 @@
+# yaml-language-server: $schema=https://coderabbit.ai/integrations/schema.v2.json
+
 language: en-US
 
-tone_instructions: Enforce all rules from CodingGuidelines.md strictly. For every violation, cite line numbers, explain the issue, provide corrected code, and reference the guideline section.
+tone_instructions: Enforce all rules from BEST_PRACTICES.md strictly. For every violation, cite line numbers, explain the issue, provide corrected code, and reference the guideline section.
 
 knowledge_base:
   opt_out: false
@@ -9,11 +11,9 @@ knowledge_base:
   code_guidelines:
     enabled: true
     filePatterns:
-      - "**/AGENTS.md"
-      - "**/agents.md"
-      - "**/Agents.md"
-      - "**/*agents*.md"
-      - "**/*AGENTS*.md"
+      - "**/BEST_PRACTICES.md"
+      - "**/best_practices.md"
+      - "**/Best_Practices.md"
 
 reviews:
   profile: assertive
@@ -31,27 +31,4 @@ reviews:
   
   path_instructions:
     - path: "**/*.cs"
-      instructions: |
-        Review this C# file STRICTLY against CodingGuidelines.md.
-        
-        Check EVERY violation:
-        1. Type declarations: All 'var' must be replaced with explicit types
-        2. Naming conventions: PascalCase for classes/methods/public fields, _camelCase for private fields, camelCase for locals
-        3. Single responsibility: Each function must have only ONE responsibility
-        4. DRY principle: No code duplication
-        5. CQS: Methods must either command (modify state) OR query (return data), not both
-        6. Explicit visibility modifiers: Always specify private/public
-        7. Boolean naming: Start with Is/Has/Did
-        8. Event naming: End with "Callback"
-        9. Button methods: Start with "OnButtonClick_"
-        10. Unity methods: Awake/Start/Update must NOT be public
-        11. LINQ in Update loops: Flag and suggest NonAlloc or for-loops
-        12. GetComponent caching: Must cache in Awake/Start, not in Update
-        13. Serialization: Use '[SerializeField] private' format
-        
-        For each violation found, output:
-        VIOLATION: [Category]
-        LINE(S): [line numbers]
-        ISSUE: [explanation]
-        SOLUTION: [corrected code]
-        GUIDELINE: [CodingGuidelines.md section reference]
+      instructions: Review this C# file strictly against BEST_PRACTICES.md. For each violation found, cite line numbers, explain the issue, provide corrected code, and reference the guideline section.
