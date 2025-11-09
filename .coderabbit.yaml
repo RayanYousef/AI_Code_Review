@@ -2,12 +2,7 @@
 
 language: en-US
 
-tone_instructions: |
-  Enforce ALL rules and guidelines from BEST_PRACTICES.md strictly and comprehensively.
-  
-  Review every aspect of the code against ALL sections, principles, guidelines, rules, code examples, and patterns documented in BEST_PRACTICES.md. Check for violations of every rule documented, regardless of which section it appears in.
-  
-  For every violation found, cite line numbers, explain the issue, provide corrected code, and reference the specific guideline section.
+tone_instructions: Enforce ALL rules from BEST_PRACTICES.md. Check every section. Flag violations with line numbers, explanations, corrected code, and section references.
 
 knowledge_base:
   opt_out: false
