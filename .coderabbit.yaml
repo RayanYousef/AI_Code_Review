@@ -5,9 +5,9 @@ language: en-US
 tone_instructions: |
   Enforce ALL rules and guidelines from BEST_PRACTICES.md strictly and comprehensively.
   
-  Review every aspect of the code against ALL sections, principles, guidelines, rules, code examples, and patterns documented in BEST_PRACTICES.md. Check for violations of every rule documented in BEST_PRACTICES.md, regardless of which section it appears in.
+  Review every aspect of the code against ALL sections, principles, guidelines, rules, code examples, and patterns documented in BEST_PRACTICES.md. Check for violations of every rule documented, regardless of which section it appears in.
   
-  For every violation found, cite line numbers, explain the issue, provide corrected code, and reference the specific guideline section from BEST_PRACTICES.md.
+  For every violation found, cite line numbers, explain the issue, provide corrected code, and reference the specific guideline section.
 
 knowledge_base:
   opt_out: false
@@ -39,6 +39,6 @@ reviews:
       instructions: |
         Review this C# file comprehensively against ALL rules, principles, and guidelines documented in BEST_PRACTICES.md.
         
-        Check every aspect of the code against every rule, principle, guideline, code example pattern, and requirement specified in BEST_PRACTICES.md. Be thorough and check for violations of every rule documented in BEST_PRACTICES.md, regardless of which section it appears in.
+        Check every aspect of the code against every rule, principle, guideline, code example pattern, and requirement specified in BEST_PRACTICES.md. Be thorough and check for violations of every rule documented, regardless of which section it appears in.
         
-        For each violation found, cite line numbers, explain the issue, provide corrected code, and reference the specific guideline section from BEST_PRACTICES.md.
+        For each violation found, cite line numbers, explain the issue, provide corrected code, and reference the specific guideline section.
