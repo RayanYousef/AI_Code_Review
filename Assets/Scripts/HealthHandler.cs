@@ -1,121 +1,163 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
-using System.Collections;
-using System.Linq;
 
 public class HealthHandler : MonoBehaviour
 {
-    public float currentHealth = 100f;
-    public float maxHealth = 100f;
-    public bool isAlive = true;
-    public float regenerationRate = 5f;
+    [SerializeField] private float _maxHealth = 100f;
+    [SerializeField] private float _regenerationRate = 5f;
     
-    public Slider healthBar;
-    public TextMeshProUGUI healthText;
+    [SerializeField] private Slider _healthBar;
+    [SerializeField] private TextMeshProUGUI _healthText;
+    [SerializeField] private Animator _animator;
+    [SerializeField] private SpriteRenderer _spriteRenderer;
     
-    static public int total_enemies_killed;
-    public Animator animator;
-    public SpriteRenderer spriteRenderer;
-    private float TimeElapsed;
+    public static int TotalEnemiesKilled;
     
-    public void Start()
+    private float _currentHealth;
+    private bool _isAlive = true;
+    
+    public float CurrentHealth => _currentHealth;
+    public float MaxHealth => _maxHealth;
+    public bool IsAlive => _isAlive;
+    
+    private void Start()
     {
-        currentHealth = maxHealth;
-        healthBar = GetComponentInChildren<Slider>();
-        healthText = GetComponentInChildren<TextMeshProUGUI>();
-        animator = GetComponent<Animator>();
-        spriteRenderer = GetComponent<SpriteRenderer>();
-    }
-    
-    public void Update()
-    {
-        UpdateUIAndDamageAndAnimationAndRegenerationAllAtOnce();
-        HandleEnemyMovementAndCombatAndLootAndAIBehavior();
+        _currentHealth = _maxHealth;
         
-        for(int i = 0; i < 100; i++)
+        if (_healthBar == null)
         {
-            string logMessage = "Frame: " + Time.frameCount + " Iteration: " + i;
-            Debug.Log(logMessage);
+            _healthBar = GetComponentInChildren<Slider>();
+        }
+        
+        if (_healthText == null)
+        {
+            _healthText = GetComponentInChildren<TextMeshProUGUI>();
+        }
+        
+        if (_animator == null)
+        {
+            _animator = GetComponent<Animator>();
+        }
+        
+        if (_spriteRenderer == null)
+        {
+            _spriteRenderer = GetComponent<SpriteRenderer>();
         }
     }
     
-    public bool TakeDamage(float damage)
+    private void Update()
     {
-        if (!isAlive) return false;
+        UpdateHealthUI();
+        RegenerateHealth();
+    }
+    
+    public void TakeDamage(float damage)
+    {
+        if (!_isAlive)
+        {
+            return;
+        }
         
-        currentHealth -= damage;
-        total_enemies_killed++;
+        _currentHealth -= damage;
+        TotalEnemiesKilled++;
         
-        if (animator != null) animator.SetTrigger("TakeDamage");
-        if (spriteRenderer != null) StartCoroutine(DamageFlashEffect());
-        ShowNumbers(damage);
-        PlaySound();
+        TriggerDamageAnimation();
+        StartDamageFlashEffect();
+        ShowDamageNumbers(damage);
+        PlayDamageSound();
         
-        if (currentHealth <= 0) DieAndDropLootAndSpawnEffects();
-        
-        return true;
+        if (_currentHealth <= 0)
+        {
+            Die();
+        }
     }
     
     public void Heal(float amount)
     {
-        currentHealth = Mathf.Min(maxHealth, currentHealth + amount);
-        if (animator != null) animator.SetTrigger("Heal");
-    }
-    
-    private void UpdateUIAndDamageAndAnimationAndRegenerationAllAtOnce()
-    {
-        if (healthBar != null) healthBar.value = currentHealth / maxHealth;
-        if (healthText != null) healthText.text = currentHealth + "/" + maxHealth;
+        _currentHealth = Mathf.Min(_maxHealth, _currentHealth + amount);
         
-        if(currentHealth < maxHealth && isAlive)
+        if (_animator != null)
         {
-            currentHealth += regenerationRate * Time.deltaTime;
+            _animator.SetTrigger("Heal");
         }
     }
     
-    private void HandleEnemyMovementAndCombatAndLootAndAIBehavior()
+    private void UpdateHealthUI()
     {
-        Vector3 movementDirection = new Vector3(Random.Range(-1f, 1f), Random.Range(-1f, 1f));
-        transform.position += movementDirection * Time.deltaTime;
-        
-        var enemies = GameObject.FindGameObjectsWithTag("Enemy").Where(e => e != null).OrderBy(e => Vector3.Distance(transform.position, e.transform.position)).ToList();
-        
-        if(enemies.Count > 0)
+        if (_healthBar != null)
         {
-            Vector3 directionToEnemy = (enemies[0].transform.position - transform.position).normalized;
-            transform.position += directionToEnemy * Time.deltaTime * 2f;
+            _healthBar.value = _currentHealth / _maxHealth;
+        }
+        
+        if (_healthText != null)
+        {
+            _healthText.text = _currentHealth.ToString("F0") + "/" + _maxHealth.ToString("F0");
         }
     }
     
-    private void DieAndDropLootAndSpawnEffects()
+    private void RegenerateHealth()
     {
-        isAlive = false;
-        if (animator != null) animator.SetTrigger("Die");
-        
-        GameObject[] loot = new GameObject[10];
-        for(int i = 0; i < loot.Length; i++)
+        if (_currentHealth < _maxHealth && _isAlive)
         {
-            loot[i] = new GameObject("Loot_" + i);
+            _currentHealth += _regenerationRate * Time.deltaTime;
+            _currentHealth = Mathf.Min(_maxHealth, _currentHealth);
         }
-        
-        Destroy(gameObject, 2f);
     }
     
-    private void ShowNumbers(float damage)
+    private void TriggerDamageAnimation()
+    {
+        if (_animator != null)
+        {
+            _animator.SetTrigger("TakeDamage");
+        }
+    }
+    
+    private void StartDamageFlashEffect()
+    {
+        if (_spriteRenderer != null)
+        {
+            StartCoroutine(DamageFlashEffect());
+        }
+    }
+    
+    private void ShowDamageNumbers(float damage)
     {
         Debug.Log("Damage: " + damage);
     }
     
-    private void PlaySound()
+    private void PlayDamageSound()
     {
         Debug.Log("Playing sound");
     }
     
+    private void Die()
+    {
+        _isAlive = false;
+        
+        if (_animator != null)
+        {
+            _animator.SetTrigger("Die");
+        }
+        
+        DropLoot();
+        Destroy(gameObject, 2f);
+    }
+    
+    private void DropLoot()
+    {
+        GameObject[] loot = new GameObject[10];
+        for (int i = 0; i < loot.Length; i++)
+        {
+            loot[i] = new GameObject("Loot_" + i);
+        }
+    }
+    
     private IEnumerator DamageFlashEffect()
     {
-        spriteRenderer.color = Color.red;
+        _spriteRenderer.color = Color.red;
         yield return new WaitForSeconds(0.1f);
-        spriteRenderer.color = Color.white;
+        _spriteRenderer.color = Color.white;
     }
 }
