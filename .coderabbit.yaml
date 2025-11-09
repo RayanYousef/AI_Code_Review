@@ -30,9 +30,14 @@ reviews:
   path_filters:
     - "!**/settings.json"
     - "!**/*.meta"
+    - "!**/*.asset"
     - "!**/Library/**"
     - "!**/Temp/**"
     - "!**/Logs/**"
+    - "!**/Packages/**"
+    - "!**/ProjectSettings/**"
+    - "!**/obj/**"
+    - "!**/bin/**"
   
   path_instructions:
     - path: "**/*.cs"
