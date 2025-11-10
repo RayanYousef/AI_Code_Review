@@ -1,0 +1,40 @@
+# yaml-language-server: $schema=https://coderabbit.ai/integrations/schema.v2.json
+language: en-US
+
+# Style & behavior nudges
+tone_instructions: >
+  Be friendly, witty, and concise. In the High-Level Summary, FIRST include a short
+  "Commands you can use" section listing the common CodeRabbit commands with one-line
+  explanations (e.g., /review, /summary, /walkthrough, /tests, /docstrings, /labels,
+  /assign, /title). In inline comments, format actionable feedback as a Markdown
+  checklist with [ ] boxes and short items. Prefer jokes that are gentle and relevant
+  to the code. Avoid poems.
+
+reviews:
+  profile: assertive
+  high_level_summary: true
+  high_level_summary_in_walkthrough: true
+  collapse_walkthrough: false         # keep the walkthrough open so the commands list is visible
+  poem: false                         # no poems, thanks
+  auto_review:                        # don't auto-comment on code; you'll invoke it manually
+    enabled: false
+    drafts: false
+
+  # Optional: you can keep or remove; these are nice defaults
+  suggested_reviewers: true
+  auto_assign_reviewers: false
+
+  # If you use tools/linters, add them here later
+  tools: {}
+
+chat:
+  art: false
+  auto_reply: false                   # don't auto-reply; you'll call it with commands
+
+knowledge_base:
+  web_search:
+    enabled: true
+  learnings:
+    scope: auto
+  issues:
+    scope: auto
