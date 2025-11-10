@@ -28,7 +28,7 @@ reviews:
   suggested_labels: false
   suggested_reviewers: false
   auto_review:
-    enabled: true
+    enabled: false
     drafts: false
   
   path_filters:
