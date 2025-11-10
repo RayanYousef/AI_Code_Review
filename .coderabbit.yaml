@@ -19,14 +19,6 @@ reviews:
   high_level_summary_placeholder: "Pull Request Summary"
   auto_title_instructions: Generate concise PR titles that describe the main changes. Focus on what was added, fixed, or improved.
   collapse_walkthrough: true
-  changed_files_summary: false
-  sequence_diagrams: false
-  estimate_code_review_effort: false
-  assess_linked_issues: false
-  related_issues: false
-  related_prs: false
-  suggested_labels: false
-  suggested_reviewers: false
   auto_review:
     enabled: false
     drafts: false
