@@ -15,13 +15,13 @@ knowledge_base:
 
 reviews:
   profile: assertive
-  high_level_summary: true
-  high_level_summary_placeholder: "Pull Request Summary"
+  high_level_summary: trues
   auto_title_instructions: Generate concise PR titles that describe the main changes. Focus on what was added, fixed, or improved.
   collapse_walkthrough: true
   auto_review:
-    enabled: false
+    enabled: true
     drafts: false
+    auto_incremental_review: false
   
   path_filters:
     - "!**/settings.json"
