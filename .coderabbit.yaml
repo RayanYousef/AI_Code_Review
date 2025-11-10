@@ -1,0 +1,51 @@
+# yaml-language-server: $schema=https://coderabbit.ai/integrations/schema.v2.json
+language: en-US
+
+tone_instructions: >
+  Follow every registered coding guideline; cite sections, list line numbers,
+  explain root causes, include corrected snippets, stay direct, skip poems.
+
+knowledge_base:
+  opt_out: false
+  learnings:
+    enabled: true
+  code_guidelines:
+    enabled: true
+    filePatterns:
+      - "**/CodingStandards*.md"
+
+reviews:
+  profile: assertive
+  high_level_summary: true
+  high_level_summary_in_walkthrough: true
+  auto_title_instructions: >
+    Generate concise PR titles that focus on what was added, fixed, or improved.
+  review_status: true
+  commit_status: true
+  in_progress_fortune: true
+  collapse_walkthrough: false
+  poem: false
+  auto_review:
+    enabled: true
+    drafts: false
+  path_filters:
+    - "!**/settings.json"
+    - "!**/*.meta"
+    - "!**/*.asset"
+    - "!**/*.unity"
+    - "!**/*.prefab"
+    - "!**/*.mat"
+    - "!**/Library/**"
+    - "!**/Temp/**"
+    - "!**/Logs/**"
+    - "!**/obj/**"
+    - "!**/bin/**"
+    - "!**/Packages/**"
+    - "!**/ProjectSettings/**"
+    - "!**/UserSettings/**"
+  path_instructions:
+    - path: "**/*.cs"
+      instructions: >
+        Review each C# file against every registered guideline; for each violation
+        list the line, explain the issue, show the fix, and cite the referenced
+        section.
