@@ -2,7 +2,7 @@
 
 language: en-US
 
-tone_instructions: Enforce ALL rules from BEST_PRACTICES.md. Check every section. Flag violations with line numbers, explanations, corrected code, and section references.
+tone_instructions: Enforce every registered guideline; cite sections, list line numbers, explain root causes, include corrected snippets, keep inline comments as Markdown checklists of each flaw.
 
 knowledge_base:
   opt_out: false
@@ -16,8 +16,17 @@ knowledge_base:
 reviews:
   profile: assertive
   high_level_summary: true
-  high_level_summary_placeholder: "Summary"
+  high_level_summary_placeholder: "Pull Request Summary"
   auto_title_instructions: Generate concise PR titles that describe the main changes. Focus on what was added, fixed, or improved.
+  collapse_walkthrough: true
+  changed_files_summary: false
+  sequence_diagrams: false
+  estimate_code_review_effort: false
+  assess_linked_issues: false
+  related_issues: false
+  related_prs: false
+  suggested_labels: false
+  suggested_reviewers: false
   auto_review:
     enabled: true
     drafts: false
