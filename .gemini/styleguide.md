@@ -31,6 +31,7 @@ Enforce ALL rules in this document. Check every section. Flag all violations wit
 - **Events**: OnValueChanged
 - **Callbacks**: ValueChangedCallback
 - **Acronyms**: MyRpc (not MyRPC)
+- **Collections**: Arrays, Lists, Dictionaries must be plural (`_enemies`, `_items`, `_playerData`)
 
 ### Code Structure
 - Always specify visibility modifiers
@@ -46,6 +47,10 @@ Enforce ALL rules in this document. Check every section. Flag all violations wit
 - `GetComponent()` only for runtime-created components
 - Cache `GetComponent()` in Awake/Start, never in Update
 - Name by type: `_rigidbody`, `_animator`, `_levelManager`
+
+### Game Object Naming
+- **Game Objects in Scene**: If a child object is assigned to a script reference, its name should match the field name in that script
+- **Referenced Objects in Scripts**: Use camelCase pattern: name + type of object (e.g., `digitalScreenText`, `healthBarImage`, `playerRigidbody`)
 
 ### Serialization
 - `[SerializeField] private int _health;` (always write `private`)
@@ -87,43 +92,47 @@ Enforce ALL rules in this document. Check every section. Flag all violations wit
 ## Code Examples - Violation Patterns
 
 ### Naming Violations
-❌ `namespace myNamespace`, `public interface Calculator`, `int calculate(float Value)`, `private bool isCalculating`, `public static int times_used`, `private const int MAX_VALUE`, `public bool Enabled()`
-✅ `namespace MyNamespace`, `public interface ICalculator`, `int Calculate(float value)`, `private bool _isCalculating`, `public static int TimesUsed`, `private const int _maxValue`, `public bool IsEnabled()`
+�?O `namespace myNamespace`, `public interface Calculator`, `int calculate(float Value)`, `private bool isCalculating`, `public static int times_used`, `private const int MAX_VALUE`, `public bool Enabled()`, `private List<Enemy> _enemy`, `private Dictionary<string, int> _item`
+�o. `namespace MyNamespace`, `public interface ICalculator`, `int Calculate(float value)`, `private bool _isCalculating`, `public static int TimesUsed`, `private const int _maxValue`, `public bool IsEnabled()`, `private List<Enemy> _enemies`, `private Dictionary<string, int> _items`
 
 ### SRP Violation
-❌ Method does multiple things (validate, calculate, log, save, notify)
-✅ Split into separate methods: `IsValidInput()`, `Calculate()`, `SaveResult()`, `NotifyProcessed()`, `LogError()`
+�?O Method does multiple things (validate, calculate, log, save, notify)
+�o. Split into separate methods: `IsValidInput()`, `Calculate()`, `SaveResult()`, `NotifyProcessed()`, `LogError()`
 
 ### OCP Violation
-❌ Switch/if-else chains: `switch (weaponType) { case "Sword": ... }`
-✅ Use interfaces/polymorphism: `IWeapon` interface, `Sword : IWeapon`, `CalculateDamage(IWeapon weapon)`
+�?O Switch/if-else chains: `switch (weaponType) { case "Sword": ... }`
+�o. Use interfaces/polymorphism: `IWeapon` interface, `Sword : IWeapon`, `CalculateDamage(IWeapon weapon)`
 
 ### LSP Violation
-❌ `Penguin : Bird` with `Fly()` throwing exception, or `Square : Rectangle` with side effects
-✅ Proper hierarchy: `FlyingBird : Bird`, `Penguin : Bird` with `Swim()`, or separate `IShape` interface
+�?O `Penguin : Bird` with `Fly()` throwing exception, or `Square : Rectangle` with side effects
+�o. Proper hierarchy: `FlyingBird : Bird`, `Penguin : Bird` with `Swim()`, or separate `IShape` interface
 
 ### ISP Violation
-❌ Fat interface: `IWorker` with `Work()`, `Eat()`, `Sleep()`, `GetPaid()` forcing `Robot` to implement unused methods
-✅ Split: `IWorkable`, `IPayable`, `IBiologicalNeeds` - implement only needed
+�?O Fat interface: `IWorker` with `Work()`, `Eat()`, `Sleep()`, `GetPaid()` forcing `Robot` to implement unused methods
+�o. Split: `IWorkable`, `IPayable`, `IBiologicalNeeds` - implement only needed
 
 ### DIP Violation
-❌ Direct concrete dependencies: `new FileLogger()`, `FindObjectOfType<AudioManager>()`
-✅ Interfaces + VContainer: `ILogger`, `IDatabase`, `[Inject]` constructor
+�?O Direct concrete dependencies: `new FileLogger()`, `FindObjectOfType<AudioManager>()`
+�o. Interfaces + VContainer: `ILogger`, `IDatabase`, `[Inject]` constructor
 
 ### CQS Violation
-❌ `public bool Login(...)` that changes state AND returns bool
-✅ Separate: `public void Login(...)` (command) and `public bool IsValidCredentials(...)` (query)
+�?O `public bool Login(...)` that changes state AND returns bool
+�o. Separate: `public void Login(...)` (command) and `public bool IsValidCredentials(...)` (query)
 
 ### Unity Violations
-❌ `GetComponent<Rigidbody>()` in Awake for editor components
-✅ `[SerializeField] private Rigidbody _rigidbody;`
+�?O `GetComponent<Rigidbody>()` in Awake for editor components
+�o. `[SerializeField] private Rigidbody _rigidbody;`
 
-❌ `new Vector3(...)` every frame, LINQ in Update
-✅ Reuse `_movement` field, use for-loops instead of LINQ
+�?O `new Vector3(...)` every frame, LINQ in Update
+�o. Reuse `_movement` field, use for-loops instead of LINQ
 
-❌ `public void Update()`, `public int health`
-✅ `void Update()`, `[SerializeField] private int _maxHealth;` with property
+�?O `public void Update()`, `public int health`
+�o. `void Update()`, `[SerializeField] private int _maxHealth;` with property
+
+�?O Game object named "HealthBar" but script field is `_healthBarImage`, or field named `_screen` for a Text component
+�o. Game object named "healthBarImage" matching field `_healthBarImage`, or field `_digitalScreenText` for a Text component
 
 ---
 
 **Enforce all rules above. Check every violation pattern. Reference specific sections when flagging issues.**
+
