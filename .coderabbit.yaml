@@ -15,7 +15,6 @@ knowledge_base:
 
 reviews:
   profile: assertive
-  high_level_summary: trues
   auto_title_instructions: Generate concise PR titles that describe the main changes. Focus on what was added, fixed, or improved.
   collapse_walkthrough: true
   auto_review:
