@@ -1,9 +1,8 @@
 # yaml-language-server: $schema=https://coderabbit.ai/integrations/schema.v2.json
+
 language: en-US
 
-tone_instructions: >
-  Follow every registered coding guideline; cite sections, list line numbers,
-  explain root causes, include corrected snippets, stay direct, skip poems.
+tone_instructions: Enforce ALL rules from BEST_PRACTICES.md. Check every section. Flag violations with line numbers, explanations, corrected code, and section references.
 
 knowledge_base:
   opt_out: false
@@ -12,40 +11,25 @@ knowledge_base:
   code_guidelines:
     enabled: true
     filePatterns:
-      - "**/CodingStandards*.md"
+      - "**/CodingStandards.md"
 
 reviews:
   profile: assertive
   high_level_summary: true
-  high_level_summary_in_walkthrough: true
-  auto_title_instructions: >
-    Generate concise PR titles that focus on what was added, fixed, or improved.
-  review_status: true
-  commit_status: true
-  in_progress_fortune: true
-  collapse_walkthrough: false
-  poem: false
+  high_level_summary_placeholder: "Summary"
+  auto_title_instructions: Generate concise PR titles that describe the main changes. Focus on what was added, fixed, or improved.
   auto_review:
     enabled: true
     drafts: false
+  
   path_filters:
     - "!**/settings.json"
     - "!**/*.meta"
     - "!**/*.asset"
-    - "!**/*.unity"
-    - "!**/*.prefab"
-    - "!**/*.mat"
     - "!**/Library/**"
     - "!**/Temp/**"
     - "!**/Logs/**"
-    - "!**/obj/**"
-    - "!**/bin/**"
     - "!**/Packages/**"
     - "!**/ProjectSettings/**"
-    - "!**/UserSettings/**"
-  path_instructions:
-    - path: "**/*.cs"
-      instructions: >
-        Review each C# file against every registered guideline; for each violation
-        list the line, explain the issue, show the fix, and cite the referenced
-        section.
+    - "!**/obj/**"
+    - "!**/bin/**"
