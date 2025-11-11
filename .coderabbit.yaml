@@ -17,9 +17,9 @@ reviews:
   profile: assertive
   auto_title_instructions: Generate concise PR titles that describe the main changes. Focus on what was added, fixed, or improved.
   collapse_walkthrough: true
-  review_status: false
+  review_status: true
   auto_review:
-    enabled: false
+    enabled: true
     drafts: false
     auto_incremental_review: false
 
